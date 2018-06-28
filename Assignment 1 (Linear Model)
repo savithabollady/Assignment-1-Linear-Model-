@@ -1,6 +1,113 @@
 1. Use the given link and locate the bank marketing dataset. Data Set Link
 Perform the below operations:
 a. Create a visual for representing missing values in the dataset.
+
+ANSWER: There are no missing values in bank dataset as per summary command
+
+bank <- read.csv("C:/Users/Savitha/Desktop/R Studio/Files/bank-additional-full.csv", sep=";")
+View(bank.additional.full)
+> summary(bank)
+      age                 job            marital     
+ Min.   :17.00   admin.     :10422   divorced: 4612  
+ 1st Qu.:32.00   blue-collar: 9254   married :24928  
+ Median :38.00   technician : 6743   single  :11568  
+ Mean   :40.02   services   : 3969   unknown :   80  
+ 3rd Qu.:47.00   management : 2924                   
+ Max.   :98.00   retired    : 1720                   
+                 (Other)    : 6156                   
+               education        default         housing     
+ university.degree  :12168   no     :32588   no     :18622  
+ high.school        : 9515   unknown: 8597   unknown:  990  
+ basic.9y           : 6045   yes    :    3   yes    :21576  
+ professional.course: 5243                                  
+ basic.4y           : 4176                                  
+ basic.6y           : 2292                                  
+ (Other)            : 1749                                  
+      loan            contact          month       day_of_week
+ no     :33950   cellular :26144   may    :13769   fri:7827   
+ unknown:  990   telephone:15044   jul    : 7174   mon:8514   
+ yes    : 6248                     aug    : 6178   thu:8623   
+                                   jun    : 5318   tue:8090   
+                                   nov    : 4101   wed:8134   
+                                   apr    : 2632              
+                                   (Other): 2016              
+    duration         campaign          pdays          previous    
+ Min.   :   0.0   Min.   : 1.000   Min.   :  0.0   Min.   :0.000  
+ 1st Qu.: 102.0   1st Qu.: 1.000   1st Qu.:999.0   1st Qu.:0.000  
+ Median : 180.0   Median : 2.000   Median :999.0   Median :0.000  
+ Mean   : 258.3   Mean   : 2.568   Mean   :962.5   Mean   :0.173  
+ 3rd Qu.: 319.0   3rd Qu.: 3.000   3rd Qu.:999.0   3rd Qu.:0.000  
+ Max.   :4918.0   Max.   :56.000   Max.   :999.0   Max.   :7.000  
+                                                                  
+        poutcome      emp.var.rate      cons.price.idx  cons.conf.idx  
+ failure    : 4252   Min.   :-3.40000   Min.   :92.20   Min.   :-50.8  
+ nonexistent:35563   1st Qu.:-1.80000   1st Qu.:93.08   1st Qu.:-42.7  
+ success    : 1373   Median : 1.10000   Median :93.75   Median :-41.8  
+                     Mean   : 0.08189   Mean   :93.58   Mean   :-40.5  
+                     3rd Qu.: 1.40000   3rd Qu.:93.99   3rd Qu.:-36.4  
+                     Max.   : 1.40000   Max.   :94.77   Max.   :-26.9  
+                                                                       
+   euribor3m      nr.employed     y        
+ Min.   :0.634   Min.   :4964   no :36548  
+ 1st Qu.:1.344   1st Qu.:5099   yes: 4640  
+ Median :4.857   Median :5191              
+ Mean   :3.621   Mean   :5167              
+ 3rd Qu.:4.961   3rd Qu.:5228              
+ Max.   :5.045   Max.   :5228      
+ 
+===========================================VISUAL Representation========================================
+                                           
+> library(mice)
+> library(VIM)
+> md.pattern(bank)
+ /\     /\
+{  `---'  }
+{  O   O  }
+==>  V <==  No need for mice. This data set is completely observed.
+ \  \|/  /
+  `-----'
+
+      age job marital education default housing loan contact month
+41188   1   1       1         1       1       1    1       1     1
+        0   0       0         0       0       0    0       0     0
+      day_of_week duration campaign pdays previous poutcome emp.var.rate
+41188           1        1        1     1        1        1            1
+                0        0        0     0        0        0            0
+      cons.price.idx cons.conf.idx euribor3m nr.employed y  
+41188              1             1         1           1 1 0
+                   0             0         0           0 0 0
+> matrixplot(bank)
+> barMiss(bank)
+> old_Cust_df<-subset(bank, bank$poutcome != "nonexistent")
+> new_Cust_df<-subset(bank, bank$poutcome == "nonexistent")
+> aggr_plot <- aggr(old_Cust_df, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(df), cex.axis=.7, gap=3, ylab=c("Histogram of missing data","Pattern"))
+
+ Variables sorted by number of missings: 
+       Variable Count
+            age     0
+            job     0
+        marital     0
+      education     0
+        default     0
+        housing     0
+           loan     0
+        contact     0
+          month     0
+    day_of_week     0
+       duration     0
+       campaign     0
+          pdays     0
+       previous     0
+       poutcome     0
+   emp.var.rate     0
+ cons.price.idx     0
+  cons.conf.idx     0
+      euribor3m     0
+    nr.employed     0
+              y     0
 b. Show a distribution of clients based on a Job.
+count<-table(bank$job)
+barplot(count,col="blue",
+        legend = rownames(count),main = "Term Deposit")
 c. Check whether is there any relation between Job and Marital Status?
 d. Check whether is there any association between Job and Education?
