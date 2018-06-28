@@ -110,4 +110,20 @@ count<-table(bank$job)
 barplot(count,col="blue",
         legend = rownames(count),main = "Term Deposit")
 c. Check whether is there any relation between Job and Marital Status?
+ANSWER: There is no correlation
+> cor.test(Bank$Job,Bank$Marital)
+	Pearson's product-moment correlation
+
+data:  Bank$Job and Bank$Marital
+t = 5.6638, df = 41186, p-value = 1.49e-08
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.01824490 0.03754489
+sample estimates:
+      cor 
+      
+ ---- OTHERWAY---
+ library(corrplot)
+corrplot(cor(Bank),type ="full","pie")
+corrplot(cor(Bank),type ="full","color")
 d. Check whether is there any association between Job and Education?
